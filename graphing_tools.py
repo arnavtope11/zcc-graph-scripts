@@ -1,6 +1,22 @@
-import seaborn
-import seaborn as sns
 import pandas as pd
+import seaborn
+import matplotlib.pyplot as plt
+from utils import get_system_names, get_pinning_limit_for_system, get_segment_sizes_for_system
+
+
+def plot_tp_latency_graph_const_seg_size(whole_dataframe: pd.DataFrame,
+                                         system_name: str,
+                                         segment_size: str,
+                                         pinning_limit: str):
+    system_names = get_system_names(whole_dataframe)
+    pinning_limit_dict = {}
+    segment_size_dict = {}
+    for system_name in system_names:
+        pinning_limit_dict[system_name] = get_pinning_limit_for_system(whole_dataframe, system_name)
+        segment_size_dict[system_name] = get_segment_sizes_for_system(whole_dataframe, system_name)
+
+
+
 
 
 def plot_segment_interim(system_dict: dict, system_name: str):

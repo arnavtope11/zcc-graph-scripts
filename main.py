@@ -22,5 +22,5 @@ def get_files(folder):
 
 
 if __name__ == '__main__':
-    files_list = get_files('./dataset/1m20phs')
-    single_latency_files(files_list, './dataset/1m20phs.csv')
+    files_list = get_files('./dataset/8m20phs-100g/')
+    single_latency_files(files_list, './dataset/8m20phs_100g.csv')

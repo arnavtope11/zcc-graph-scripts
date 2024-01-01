@@ -23,6 +23,14 @@ def get_segment_sizes(whole_dataframe: pd.DataFrame):
     return whole_dataframe['segment_size_2mb_pages'].unique().tolist()
 
 
+def get_pinning_limit_for_system(whole_dataframe: pd.DataFrame, system_name: str):
+    return whole_dataframe[whole_dataframe['system'] == system_name]['pinning_limit_2mb_pages'].unique().tolist()
+
+
+def get_segment_sizes_for_system(whole_dataframe: pd.DataFrame, system_name: str):
+    return whole_dataframe[whole_dataframe['system'] == system_name]['segment_size_2mb_pages'].unique().tolist()
+
+
 def get_offered_loads(whole_dataframe: pd.DataFrame):
     return whole_dataframe['offered_load_pps'].unique().tolist()
 
@@ -39,6 +47,15 @@ def get_pinning_limits(whole_dataframe: pd.DataFrame, system_name: str, segment_
     return (whole_dataframe[(whole_dataframe['system'] == system_name) &
                             (whole_dataframe['segment_size_2mb_pages'] == segment_size)]['pinning_limit_2mb_pages'].
             unique().tolist())
+
+
+def get_heatmap_system_segsize(whole_dataframe: pd.DataFrame,
+                               segment_size: str,
+                               system_name: str):
+    queried_dataframe = whole_dataframe[(whole_dataframe['segment_size_2mb_pages'] == segment_size) &
+                                        (whole_dataframe['system'] == system_name)]
+    return queried_dataframe[['offered_load_pps', 'p99', 'achieved_load_pps',
+                              'pinning_limit_2mb_pages']].drop_duplicates()
 
 
 def get_tp_lat_graph_entities_mfu(whole_dataframe: pd.DataFrame, segment_size: str, pinning_limit: str,
@@ -60,15 +77,13 @@ def get_tp_lat_graph_entities(whole_dataframe: pd.DataFrame, segment_size: str, 
                     'system']
     return stripped_dataframe[column_names]
 
-
-# def plot_throughput_latency_graph_system_segment(whole_dataframe: pd.DataFrame,
-#                                                  op_folder: str,
-#                                                  system_name: str,
-#                                                  segment_size: int):
-#     stripped_dataframe = whole_dataframe[['system', 'segment_size_2mb_pages', 'offered_load_pps', 'p99',
-#                                           'achievable_load_pps']]
-#     print(stripped_dataframe.head())
-
+def get_line_plot_points(whole_dataframe: pd.DataFrame,
+                         seg_size: str,
+                         system_name: str,
+                         pinning_limit: str):
+    plot_dataframe = whole_dataframe[(whole_dataframe['segment_size_2mb_pages'] == seg_size) &
+                                     (whole_dataframe['system'] == system_name) &
+                                     (whole_dataframe['pinning_limit_2mb_pages'] == pinning_limit)]
 
 def split_based_on_segment_size(whole_dataframe: pd.DataFrame, op_folder: str):
     segment_sizes = whole_dataframe['segment_size_2mb_pages'].unique()
@@ -84,5 +99,4 @@ def split_based_on_segment_size(whole_dataframe: pd.DataFrame, op_folder: str):
 
 
 if __name__ == '__main__':
-    # split_based_on_segment_size(read_pandas_dataset('./dataset/1m20phs.csv'), op_folder='./dataset/1m20phs/segmented')
     pass
