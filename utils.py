@@ -77,6 +77,7 @@ def get_tp_lat_graph_entities(whole_dataframe: pd.DataFrame, segment_size: str, 
                     'system']
     return stripped_dataframe[column_names]
 
+
 def get_line_plot_points(whole_dataframe: pd.DataFrame,
                          seg_size: str,
                          system_name: str,
@@ -84,6 +85,7 @@ def get_line_plot_points(whole_dataframe: pd.DataFrame,
     plot_dataframe = whole_dataframe[(whole_dataframe['segment_size_2mb_pages'] == seg_size) &
                                      (whole_dataframe['system'] == system_name) &
                                      (whole_dataframe['pinning_limit_2mb_pages'] == pinning_limit)]
+
 
 def split_based_on_segment_size(whole_dataframe: pd.DataFrame, op_folder: str):
     segment_sizes = whole_dataframe['segment_size_2mb_pages'].unique()
@@ -96,6 +98,26 @@ def split_based_on_segment_size(whole_dataframe: pd.DataFrame, op_folder: str):
             segment_size_string = dataframe['segment_size_2mb_pages'].unique().item()
             system_string = sys_df['system'].unique().item()
             dropped_column_df.to_csv(f'./{op_folder}/1m20phs_{segment_size_string}_{system_string}.csv', index=False)
+
+
+def get_tp_latency_item_for_system(whole_dataframe: pd.DataFrame, system_name: str):
+    return (whole_dataframe[whole_dataframe['system'] == system_name][['system', 'offered_load_pps',
+                                                                       'achieved_load_pps', 'p99']]
+            .drop_duplicates())
+
+
+def get_tp_latency_item_for_segment_pinning_limit(
+        whole_dataframe: pd.DataFrame,
+        system_name: str,
+        segment_size: str,
+        pinning_limit: str):
+    return (whole_dataframe[(whole_dataframe['system'] == system_name) &
+                            (whole_dataframe['segment_size_2mb_pages'] == segment_size) &
+                            (whole_dataframe['pinning_limit_2mb_pages'] == pinning_limit)][['system',
+                                                                                            'offered_load_pps',
+                                                                                            'achieved_load_pps',
+                                                                                            'p99']]
+            .drop_duplicates())
 
 
 if __name__ == '__main__':
