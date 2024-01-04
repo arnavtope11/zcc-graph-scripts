@@ -49,6 +49,12 @@ def get_pinning_limits(whole_dataframe: pd.DataFrame, system_name: str, segment_
             unique().tolist())
 
 
+def get_segment_sizes_for_pin_limit(whole_dataframe: pd.DataFrame, system_name: str, pinning_limit: str):
+    return (whole_dataframe[(whole_dataframe['system'] == system_name) &
+                            (whole_dataframe['pinning_limit_2mb_pages'] == pinning_limit)]['segment_size_2mb_pages'].
+            unique().tolist())
+
+
 def get_heatmap_system_segsize(whole_dataframe: pd.DataFrame,
                                segment_size: str,
                                system_name: str):
@@ -118,6 +124,7 @@ def get_tp_latency_item_for_segment_pinning_limit(
                                                                                             'achieved_load_pps',
                                                                                             'p99']]
             .drop_duplicates())
+
 
 
 if __name__ == '__main__':
