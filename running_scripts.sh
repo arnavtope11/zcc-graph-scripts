@@ -68,3 +68,26 @@ nohup python3 /mnt/sdb/cornflakes/experiments/zcc-cf-kv-bench.py \
 -lt /mnt/sdb/8m_workload/workload_8m_shuffled-1-batched.load \
 -qt /mnt/sdb/8m_workload/workload_8m_shuffled-1-batched.access \
 -lc /mnt/sdb/cornflakes/experiments/yamls/loopingparams/0cc/0cc-synthetic-128.yaml &
+
+
+# Segment size 256
+
+nohup python3 /mnt/sdb/cornflakes/experiments/zcc-cf-kv-bench.py \
+-e loop \
+-f /mnt/sdb/looping_params_ss256_results \
+-c /mnt/sdb/cornflakes/vish_config.yaml \
+-ec /mnt/sdb/cornflakes/experiments/yamls/cmdlines/0cc/0cc-ycsb.yaml \
+-lt /mnt/sdb/8m_workload/workload_8m_shuffled-1-batched.load \
+-qt /mnt/sdb/8m_workload/workload_8m_shuffled-1-batched.access \
+-lc /mnt/sdb/cornflakes/experiments/yamls/loopingparams/0cc/0cc-synthetic-256.yaml &
+
+# Segment size 256
+
+nohup python3 /mnt/sdb/cornflakes/experiments/zcc-cf-kv-bench.py \
+-e loop \
+-f /mnt/sdb/looping_params_ss512_results \
+-c /mnt/sdb/cornflakes/vish_config.yaml \
+-ec /mnt/sdb/cornflakes/experiments/yamls/cmdlines/0cc/0cc-ycsb.yaml \
+-lt /mnt/sdb/8m_workload/workload_8m_shuffled-1-batched.load \
+-qt /mnt/sdb/8m_workload/workload_8m_shuffled-1-batched.access \
+-lc /mnt/sdb/cornflakes/experiments/yamls/loopingparams/0cc/0cc-synthetic-512.yaml &
