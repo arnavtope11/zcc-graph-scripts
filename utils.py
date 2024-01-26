@@ -106,9 +106,9 @@ def split_based_on_segment_size(whole_dataframe: pd.DataFrame, op_folder: str):
             dropped_column_df.to_csv(f'./{op_folder}/1m20phs_{segment_size_string}_{system_string}.csv', index=False)
 
 
-def get_tp_latency_item_for_system(whole_dataframe: pd.DataFrame, system_name: str):
+def get_tp_latency_item_for_system(whole_dataframe: pd.DataFrame, system_name: str, latency: str = 'p99'):
     return (whole_dataframe[whole_dataframe['system'] == system_name][['system', 'offered_load_pps',
-                                                                       'achieved_load_pps', 'p99']]
+                                                                       'achieved_load_pps', latency]]
             .drop_duplicates())
 
 
@@ -116,13 +116,14 @@ def get_tp_latency_item_for_segment_pinning_limit(
         whole_dataframe: pd.DataFrame,
         system_name: str,
         segment_size: str,
-        pinning_limit: str):
+        pinning_limit: str,
+        latency: str = 'p99'):
     return (whole_dataframe[(whole_dataframe['system'] == system_name) &
                             (whole_dataframe['segment_size_2mb_pages'] == segment_size) &
                             (whole_dataframe['pinning_limit_2mb_pages'] == pinning_limit)][['system',
                                                                                             'offered_load_pps',
                                                                                             'achieved_load_pps',
-                                                                                            'p99']]
+                                                                                            latency]]
             .drop_duplicates())
 
 
