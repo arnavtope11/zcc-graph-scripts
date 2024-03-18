@@ -127,6 +127,14 @@ def get_tp_latency_item_for_segment_pinning_limit(
             .drop_duplicates())
 
 
+def get_peak_throughput_for_system(whole_dataframe: pd.DataFrame, system_name: str):
+    return whole_dataframe[whole_dataframe['system'] == system_name]['achieved_load_pps'].max()
+
+
+def get_peak_through_for_system_segment_size_pinning_limit(whole_dataframe: pd.DataFrame, system_name: str, segment_size: str, pinning_limit: str):
+    return whole_dataframe[(whole_dataframe['system'] == system_name) &
+                            (whole_dataframe['segment_size_2mb_pages'] == segment_size) &
+                            (whole_dataframe['pinning_limit_2mb_pages'] == pinning_limit)]['achieved_load_pps'].max()
 
 if __name__ == '__main__':
     pass
