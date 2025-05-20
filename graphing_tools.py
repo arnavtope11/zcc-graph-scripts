@@ -13,7 +13,7 @@ def two_line_plot(df1: pd.DataFrame, df2: pd.DataFrame, x_axis: str, y_axis: str
     sns_plot.set_xlabel(x_axis)
     sns_plot.set_ylabel(y_axis)
     sns_plot.legend()
-    sns_plot.figure.savefig(f'./graphs/1m20phs/{title}.png')
+    sns_plot.figure.savefig(f'./graphs/{title}.png')
 
 
 def multiple_line_plot(df_list: list, x_axis: str, y_axis: str, title: str, op_folder: str, file_name: str):
@@ -70,8 +70,8 @@ def plot_tp_latency_curve_const_segment(whole_dataframe: pd.DataFrame, op_folder
             })
             # print(plot_lines[-1]['data'], plot_lines[-1]['label'])
         multiple_line_plot(plot_lines, 'achieved_load_pps', latency,
-                           f'{latency} vs achieved_load_pps_ss{segment_size}_8m20phs', op_folder=op_folder,
-                           file_name=f'tp_latency_curve_ss{segment_size}_8m20phs')
+                           f'{latency} vs achieved_load_pps_ss{segment_size}_cdn', op_folder=op_folder,
+                           file_name=f'tp_latency_curve_ss{segment_size}_cdn')
         del plot_lines
     # two_line_plot(max_idx_cf, max_idx_copy, 'offered_load_pps', 'p99', 'p99 vs offered_load_pps')
 
@@ -115,8 +115,8 @@ def plot_tp_latency_curve_const_pinning_limit(whole_dataframe: pd.DataFrame, op_
             })
 
         multiple_line_plot(plot_lines, 'achieved_load_pps', latency,
-                           f'{latency} vs achieved_load_pps_pl{pin_limit}_1m20phs',
-                           op_folder, f'tp_latency_curve_pl{pin_limit}_8m20phs')
+                           f'{latency} vs achieved_load_pps_pl{pin_limit}_cdn',
+                           op_folder, f'tp_latency_curve_pl{pin_limit}_cdn')
         del plot_lines
 
 
@@ -125,17 +125,14 @@ def plot_segment_interim(system_dict: dict, system_name: str):
     for keys in system_dict.keys():
         sns_plot = seaborn.lineplot(data=system_dict[keys], x='achieved_load_pps', y='p99', label=keys)
 
-    sns_plot.savefig(f'./dataset/1m20phs/segmented/{system_name}_p99.png')
+    sns_plot.savefig(f'./dataset/segmented/{system_name}_p99.png')
 
     # seaborn.lineplot(data=system_dict['2mb_pages'], x='offered_load', y='achieved_load', label='2mb_pages')
 
-
 if __name__ == '__main__':
-    DATASET_FILE_1M20PHS = "./dataset/1m20phs.csv"
-    DATASET_FILE_8M20PHS = "./dataset/8m20phs_100g.csv"
-    DATASET_FILE_8M20PHS_SHUFFLED = "./dataset/8m20phs_d6515.csv"
-    dataset_dataframe = read_pandas_dataset(DATASET_FILE_8M20PHS_SHUFFLED)
-    # plot_tp_latency_curve_const_segment(dataset_dataframe, './graphs/8m20phs_shuffled/segment_size',
-    #                                     latency='p80')
-    plot_tp_latency_curve_const_pinning_limit(dataset_dataframe, './graphs/8m20phs_shuffled/pinning_limit',
-                                              latency='p80')
+    DATASET_FILE = "./dataset/latencies.csv"
+    dataset_dataframe = read_pandas_dataset(DATASET_FILE)
+    plot_tp_latency_curve_const_segment(dataset_dataframe, './graphs',
+                                        latency='p80')
+    # plot_tp_latency_curve_const_pinning_limit(dataset_dataframe, './graphs/8m20phs_shuffled/pinning_limit',
+    #                                          latency='p80')
